@@ -6,16 +6,6 @@ const routes: RouteRecordRaw[] = [
         name: "Home",
         component: () => import("@/views/Home.vue"),
     },
-    {
-        path: "/:pathMatch(.*)*",
-        name: "NotFound",
-        component: () => import("@/views/NotFound.vue"),
-    },
-    {
-        path: "/about",
-        name: "About",
-        component: () => import("@/views/About.vue"),
-    },
 ];
 
 export default routes;
