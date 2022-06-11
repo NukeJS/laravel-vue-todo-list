@@ -29,10 +29,10 @@ const DEFAULT_TOAST: Partial<Toast> = {
 
 export interface ToastActions {
     toast: (toast: ToastWithoutId) => ReturnType<CreateToastFunction>;
-    success: (toast: ToastWithoutId) => ReturnType<CreateToastFunction>;
-    warning: (toast: ToastWithoutId) => ReturnType<CreateToastFunction>;
-    error: (toast: ToastWithoutId) => ReturnType<CreateToastFunction>;
-    info: (toast: ToastWithoutId) => ReturnType<CreateToastFunction>;
+    success: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
+    warning: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
+    error: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
+    info: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
 }
 
 export const injectionKey = Symbol("toasts") as InjectionKey<ToastActions>;
