@@ -116,7 +116,7 @@ const modals = reactive({
 const openModal = (name: keyof typeof modals) => (modals[name] = true);
 
 const anyModalIsOpen = computed(() =>
-    Object.values(modals).some((modal) => modal)
+    Object.values(modals).some((modal: boolean) => modal)
 );
 
 const onCloseCreateAndUpdateModal = () => {
