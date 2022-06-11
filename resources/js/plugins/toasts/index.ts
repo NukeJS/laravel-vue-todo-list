@@ -72,15 +72,13 @@ const ToastsPlugin: Plugin = {
                         {
                             class: "relative space-y-2 p-4",
                         },
-                        toasts.value.map((toast) => {
-                            console.log(toast);
-
-                            return h(Toast, {
+                        toasts.value.map((toast) =>
+                            h(Toast, {
                                 toast,
                                 onDismiss: () => removeToast(toast.id),
                                 key: toast.id,
-                            });
-                        })
+                            })
+                        )
                     );
             },
         }).mount(toastsContainerElement);
