@@ -18,18 +18,6 @@
         <div class="mt-6">
             <div class="relative overflow-x-auto rounded-xl border shadow-lg">
                 <table class="w-full bg-white text-left text-sm">
-                    <thead
-                        class="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase text-slate-700"
-                    >
-                        <tr>
-                            <th scope="col" class="px-6 py-3 pt-4 font-bold">
-                                Todo
-                            </th>
-                            <th scope="col" class="px-6 py-3 pt-4">
-                                <span class="sr-only">Actions</span>
-                            </th>
-                        </tr>
-                    </thead>
                     <tbody class="divide-y text-slate-500">
                         <tr
                             v-if="
