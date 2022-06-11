@@ -5,7 +5,7 @@
                 <div class="space-y-3">
                     <Input
                         v-model="todo.name"
-                        label="Todo"
+                        label="Name"
                         :error="getFirstError('name')"
                     />
                 </div>
@@ -33,6 +33,7 @@ import {
     type Todo,
 } from "@/stores/todos";
 import { clearErrors, getFirstError, hasAnyErrors } from "@/stores/errors";
+import useToasts from "@/composables/useToasts";
 
 import BaseModal from "./BaseModal.vue";
 import Input from "./Input.vue";
@@ -44,6 +45,8 @@ const props = defineProps<{
     todoEditId?: Todo["id"];
     editMode?: boolean;
 }>();
+
+const toasts = useToasts();
 
 const modal = ref<InstanceType<typeof BaseModal> | null>(null);
 const modalTitle = computed(() =>
@@ -72,16 +75,20 @@ const submitCreateUpdateTodo = async () => {
 
     if (props.editMode) {
         await updateTodo(todo.value.id as Todo["id"], todo.value);
+        toasts.success({
+            message: "Todo successfully updated!",
+        });
     } else {
         await createTodo(todo.value as Todo);
+        toasts.success({
+            message: "Todo successfully created!",
+        });
     }
 
-    if (!hasAnyErrors()) {
-        todo.value = createEmptyTodo();
+    todo.value = createEmptyTodo();
 
-        if (!modal.value) return;
-        modal.value.isOpen = false;
-    }
+    if (!modal.value) return;
+    modal.value.isOpen = false;
 };
 /* -------------------------------------------------------------------------- */
 </script>
