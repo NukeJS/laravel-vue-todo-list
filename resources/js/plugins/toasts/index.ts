@@ -27,7 +27,7 @@ const DEFAULT_TOAST: Partial<Toast> = {
     pauseOnHover: true,
 };
 
-export interface ToastActions {
+export interface ToastsActions {
     toast: (toast: ToastWithoutId) => ReturnType<CreateToastFunction>;
     success: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
     warning: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
@@ -35,7 +35,7 @@ export interface ToastActions {
     info: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
 }
 
-export const injectionKey = Symbol("toasts") as InjectionKey<ToastActions>;
+export const injectionKey = Symbol("toasts") as InjectionKey<ToastsActions>;
 
 const ToastsPlugin: Plugin = {
     install(app) {
@@ -99,7 +99,7 @@ const ToastsPlugin: Plugin = {
             info: (toast: ToastWithoutIdAndType) => {
                 return createToast({ ...toast, type: "info" });
             },
-        } as ToastActions);
+        } as ToastsActions);
     },
 };
 
