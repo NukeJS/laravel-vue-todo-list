@@ -1,39 +1,21 @@
 /* --------------------------------- Imports -------------------------------- */
 import { type Plugin, type InjectionKey, ref, createApp, h } from "vue";
 import { v4 as uuidv4 } from "uuid";
+import type {
+    Toast,
+    CreateToastFunction,
+    RemoveToastFunction,
+    ToastsActions,
+} from "./types";
 
-import Toast from "./Toast.vue";
+import ToastComponent from "./Toast.vue";
 /* -------------------------------------------------------------------------- */
-
-export interface Toast {
-    id: string;
-    type?: "success" | "warning" | "error" | "info";
-    title?: string;
-    message: string;
-    duration?: number | null;
-    pauseOnHover?: boolean;
-}
-
-type ToastWithoutId = Omit<Toast, "id">;
-type ToastWithoutIdAndType = Omit<Toast, "id" | "type">;
-type CreateToastFunction = (toast: ToastWithoutId) => {
-    dismiss: RemoveToastFunction;
-};
-type RemoveToastFunction = (id: Toast["id"]) => void;
 
 const DEFAULT_TOAST: Partial<Toast> = {
     type: "success",
     duration: 5000,
     pauseOnHover: true,
 };
-
-export interface ToastsActions {
-    toast: (toast: ToastWithoutId) => ReturnType<CreateToastFunction>;
-    success: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
-    warning: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
-    error: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
-    info: (toast: ToastWithoutIdAndType) => ReturnType<CreateToastFunction>;
-}
 
 export const injectionKey = Symbol("toasts") as InjectionKey<ToastsActions>;
 
@@ -50,7 +32,7 @@ const ToastsPlugin: Plugin = {
         );
         document.body.appendChild(toastsContainerElement);
 
-        const createToast = (toast: ToastWithoutId) => {
+        const createToast: CreateToastFunction = (toast) => {
             const newToast = { ...DEFAULT_TOAST, ...toast, id: uuidv4() };
 
             toasts.value.push(newToast);
@@ -60,7 +42,7 @@ const ToastsPlugin: Plugin = {
             };
         };
 
-        const removeToast = (id: Toast["id"]) => {
+        const removeToast: RemoveToastFunction = (id) => {
             toasts.value = toasts.value.filter((toast) => toast.id !== id);
         };
 
@@ -73,7 +55,7 @@ const ToastsPlugin: Plugin = {
                             class: "relative space-y-2 p-4",
                         },
                         toasts.value.map((toast) =>
-                            h(Toast, {
+                            h(ToastComponent, {
                                 toast,
                                 onDismiss: () => removeToast(toast.id),
                                 key: toast.id,
@@ -84,20 +66,20 @@ const ToastsPlugin: Plugin = {
         }).mount(toastsContainerElement);
 
         app.provide(injectionKey, {
-            toast: (toast: ToastWithoutId) => {
-                return createToast(toast);
+            toast: (message, options) => {
+                return createToast({ message, ...options });
             },
-            success: (toast: ToastWithoutIdAndType) => {
-                return createToast({ ...toast, type: "success" });
+            success: (message, options) => {
+                return createToast({ message, ...options, type: "success" });
             },
-            warning: (toast: ToastWithoutIdAndType) => {
-                return createToast({ ...toast, type: "warning" });
+            warning: (message, options) => {
+                return createToast({ message, ...options, type: "warning" });
             },
-            error: (toast: ToastWithoutIdAndType) => {
-                return createToast({ ...toast, type: "error" });
+            error: (message, options) => {
+                return createToast({ message, ...options, type: "error" });
             },
-            info: (toast: ToastWithoutIdAndType) => {
-                return createToast({ ...toast, type: "info" });
+            info: (message, options) => {
+                return createToast({ message, ...options, type: "info" });
             },
         } as ToastsActions);
     },

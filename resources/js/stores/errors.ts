@@ -31,6 +31,12 @@ export const clearErrors = () => {
 };
 /* -------------------------------------------------------------------------- */
 
+axios.interceptors.request.use((request) => {
+    clearErrors();
+
+    return request;
+});
+
 axios.interceptors.response.use(
     (response) => {
         clearErrors();

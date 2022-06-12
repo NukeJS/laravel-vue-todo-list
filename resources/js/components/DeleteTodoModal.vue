@@ -1,5 +1,5 @@
 <template>
-    <BaseModal ref="modal" title="Delete Todo">
+    <BaseModal ref="modal" title="Delete Todo" :persistent="loading">
         <template #default="{ close }">
             <form @submit.prevent="submitDeleteTodo">
                 <div class="mt-3">
@@ -11,8 +11,16 @@
                 <div
                     class="mt-4 grid grid-cols-1 space-y-3 sm:grid-cols-2 sm:space-y-0 sm:space-x-3"
                 >
-                    <Button variant="secondary" @click="close"> Cancel </Button>
-                    <Button type="danger" :loading="loading"> Delete </Button>
+                    <Button
+                        variant="secondary"
+                        @click="close"
+                        :disabled="loading"
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="submit" variant="error" :loading="loading">
+                        Delete
+                    </Button>
                 </div>
             </form>
         </template>
@@ -24,6 +32,7 @@
 import { ref } from "vue";
 import { deleteTodo, type Todo } from "@/stores/todos";
 import { loading } from "@/stores/loading";
+import useToasts from "@/composables/useToasts";
 
 import BaseModal from "./BaseModal.vue";
 import Button from "./Button.vue";
@@ -34,6 +43,8 @@ const props = defineProps<{
     todoId?: Todo["id"];
 }>();
 
+const toasts = useToasts();
+
 const modal = ref<InstanceType<typeof BaseModal> | null>(null);
 /* -------------------------------------------------------------------------- */
 
@@ -41,6 +52,7 @@ const modal = ref<InstanceType<typeof BaseModal> | null>(null);
 const submitDeleteTodo = async () => {
     if (!props.todoId) return;
     await deleteTodo(props.todoId);
+    toasts.success("Todo successfully deleted!");
 
     if (!modal.value) return;
     modal.value.isOpen = false;

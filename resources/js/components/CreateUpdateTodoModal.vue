@@ -1,5 +1,5 @@
 <template>
-    <BaseModal ref="modal" :title="modalTitle">
+    <BaseModal ref="modal" :title="modalTitle" :persistent="loading">
         <template #default="{ close }">
             <form @submit.prevent="submitCreateUpdateTodo">
                 <div class="space-y-3">
@@ -12,8 +12,14 @@
                 <div
                     class="mt-4 grid grid-cols-1 space-y-3 sm:grid-cols-2 sm:space-y-0 sm:space-x-3"
                 >
-                    <Button variant="secondary" @click="close"> Cancel </Button>
-                    <Button type="submit">
+                    <Button
+                        variant="secondary"
+                        @click="close"
+                        :disabled="loading"
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="submit" :loading="loading">
                         {{ editMode ? "Update" : "Create" }}
                     </Button>
                 </div>
@@ -25,6 +31,7 @@
 <script setup lang="ts">
 /* --------------------------------- Imports -------------------------------- */
 import { computed, ref, watch } from "vue";
+import { loading } from "@/stores/loading";
 import {
     createEmptyTodo,
     updateTodo,
@@ -32,7 +39,7 @@ import {
     getTodo,
     type Todo,
 } from "@/stores/todos";
-import { clearErrors, getFirstError, hasAnyErrors } from "@/stores/errors";
+import { clearErrors, getFirstError } from "@/stores/errors";
 import useToasts from "@/composables/useToasts";
 
 import BaseModal from "./BaseModal.vue";
@@ -71,18 +78,12 @@ watch(
 const todo = ref<Partial<Todo>>(createEmptyTodo());
 
 const submitCreateUpdateTodo = async () => {
-    clearErrors();
-
     if (props.editMode) {
         await updateTodo(todo.value.id as Todo["id"], todo.value);
-        toasts.success({
-            message: "Todo successfully updated!",
-        });
+        toasts.success("Todo successfully updated!");
     } else {
         await createTodo(todo.value as Todo);
-        toasts.success({
-            message: "Todo successfully created!",
-        });
+        toasts.success("Todo successfully created!");
     }
 
     todo.value = createEmptyTodo();

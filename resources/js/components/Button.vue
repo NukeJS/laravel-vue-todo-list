@@ -11,9 +11,8 @@
         :class="[
             'inline-flex items-center justify-center font-medium transition focus:outline-none focus:ring',
             {
-                'opacity-75': disabled,
+                'opacity-75': disabled || loading,
                 'w-full': block,
-                'cursor-pointer': !disabled,
             },
             {
                 'rounded-md px-4 py-1': size === 'sm',
@@ -22,29 +21,18 @@
                 'rounded-lg px-10 py-4 text-xl': size === 'xl',
             },
             {
-                'bg-blue-500 text-white': variant === 'primary',
-                'hover:bg-blue-600 focus:ring-blue-200 active:bg-blue-700':
-                    variant === 'primary' && !disabled,
-
-                'bg-zinc-500 text-white': variant === 'secondary',
-                'hover:bg-zinc-600 focus:ring-zinc-200 active:bg-zinc-700':
-                    variant === 'secondary' && !disabled,
-
-                'bg-green-500 text-white': variant === 'success',
-                'active:green-700 hover:bg-green-600 focus:ring-green-200':
-                    variant === 'success' && !disabled,
-
-                'bg-amber-500 text-white': variant === 'warning',
-                'active:amber-700 hover:bg-amber-600 focus:ring-amber-200':
-                    variant === 'warning' && !disabled,
-
-                'bg-red-500 text-white': variant === 'danger',
-                'hover:bg-red-600 focus:ring-red-200 active:bg-red-700':
-                    variant === 'danger' && !disabled,
-
-                'bg-sky-500 text-white': variant === 'info',
-                'active:sky-700 hover:bg-sky-600 focus:ring-sky-200':
-                    variant === 'info' && !disabled,
+                'enabled:hover:bg-blue-600 enabled:focus:ring-blue-200 enabled:active:bg-blue-700 bg-blue-500 text-white':
+                    variant === 'primary',
+                'enabled:hover:bg-zinc-600 enabled:focus:ring-zinc-200 enabled:active:bg-zinc-700 bg-zinc-500 text-white':
+                    variant === 'secondary',
+                'enabled:hover:bg-green-600 enabled:focus:ring-green-200 enabled:active:bg-green-700 bg-green-500 text-white':
+                    variant === 'success',
+                'enabled:hover:bg-amber-600 enabled:focus:ring-amber-200 enabled:active:bg-amber-700 bg-amber-500 text-white':
+                    variant === 'warning',
+                'enabled:hover:bg-red-600 enabled:focus:ring-red-200 enabled:active:bg-red-700 bg-red-500 text-white':
+                    variant === 'error',
+                'enabled:active:sky-700 enabled:hover:bg-sky-600 enabled:focus:ring-sky-200 bg-sky-500 text-white':
+                    variant === 'info',
             },
         ]"
     >
@@ -83,7 +71,7 @@ withDefaults(
             | "secondary"
             | "success"
             | "warning"
-            | "danger"
+            | "error"
             | "info";
         block?: boolean;
         size?: "sm" | "md" | "lg" | "xl";

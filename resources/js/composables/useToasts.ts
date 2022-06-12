@@ -1,6 +1,7 @@
 /* --------------------------------- Imports -------------------------------- */
 import { inject } from "vue";
-import { injectionKey, type ToastsActions } from "@/plugins/toasts";
+import { injectionKey } from "@/plugins/toasts";
+import type { ToastsActions } from "@/plugins/toasts/types";
 /* -------------------------------------------------------------------------- */
 
 export default function useToasts() {

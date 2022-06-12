@@ -44,7 +44,7 @@ import {
     ExclamationCircleIcon,
     InformationCircleIcon,
 } from "@heroicons/vue/outline";
-import type { Toast } from "./";
+import type { Toast } from "./types";
 /* -------------------------------------------------------------------------- */
 
 /* --------------------------------- Globals -------------------------------- */
@@ -89,9 +89,7 @@ const resumeToast = () => {
 
     startedAt.value = Date.now();
 
-    timeout.value = setTimeout(() => {
-        emit("dismiss");
-    }, remainingTime.value);
+    timeout.value = setTimeout(() => emit("dismiss"), remainingTime.value);
 };
 /* -------------------------------------------------------------------------- */
 
@@ -100,9 +98,7 @@ onMounted(() => {
     startedAt.value = Date.now();
 
     if (props.toast.duration) {
-        timeout.value = setTimeout(() => {
-            emit("dismiss");
-        }, props.toast.duration);
+        timeout.value = setTimeout(() => emit("dismiss"), props.toast.duration);
     }
 });
 /* -------------------------------------------------------------------------- */

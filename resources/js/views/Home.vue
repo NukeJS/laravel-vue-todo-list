@@ -35,7 +35,7 @@
                         </tr>
                         <tr v-else-if="!todos.length">
                             <td class="px-6 py-4 text-center" colspan="3">
-                                No todos found.
+                                No todos to display.
                             </td>
                         </tr>
                         <tr v-else v-for="todo in todos" :key="todo.id">
